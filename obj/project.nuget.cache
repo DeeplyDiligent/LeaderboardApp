@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "SykhATGs+5c=",
+  "dgSpecHash": "WVmVK3rxVDw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\deepbh\\Documents\\Github\\ghcpac\\LeaderboardApp\\LeaderboardApp\\LeaderboardApp.csproj",
+  "projectFilePath": "C:\\Users\\deepbh\\Documents\\Github\\LeaderboardApp\\LeaderboardApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\deepbh\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\deepbh\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

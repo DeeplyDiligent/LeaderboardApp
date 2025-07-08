@@ -17,73 +17,73 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = LeaderboardApp
 build_property.RootNamespace = LeaderboardApp
-build_property.ProjectDir = C:\Users\deepbh\Documents\Github\ghcpac\LeaderboardApp\LeaderboardApp\
+build_property.ProjectDir = C:\Users\deepbh\Documents\Github\LeaderboardApp\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\deepbh\Documents\Github\ghcpac\LeaderboardApp\LeaderboardApp
+build_property.MSBuildProjectDirectory = C:\Users\deepbh\Documents\Github\LeaderboardApp
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/deepbh/Documents/Github/ghcpac/LeaderboardApp/LeaderboardApp/Views/Auth/Login.cshtml]
+[C:/Users/deepbh/Documents/Github/LeaderboardApp/Views/Auth/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/deepbh/Documents/Github/ghcpac/LeaderboardApp/LeaderboardApp/Views/Challenge/Details.cshtml]
+[C:/Users/deepbh/Documents/Github/LeaderboardApp/Views/Challenge/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhbGxlbmdlXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/deepbh/Documents/Github/ghcpac/LeaderboardApp/LeaderboardApp/Views/Challenge/ExternalLink.cshtml]
+[C:/Users/deepbh/Documents/Github/LeaderboardApp/Views/Challenge/ExternalLink.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhbGxlbmdlXEV4dGVybmFsTGluay5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/deepbh/Documents/Github/ghcpac/LeaderboardApp/LeaderboardApp/Views/Home/AllChallenges.cshtml]
+[C:/Users/deepbh/Documents/Github/LeaderboardApp/Views/Home/AllChallenges.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBbGxDaGFsbGVuZ2VzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/deepbh/Documents/Github/ghcpac/LeaderboardApp/LeaderboardApp/Views/Home/FullLeaderBoard.cshtml]
+[C:/Users/deepbh/Documents/Github/LeaderboardApp/Views/Home/FullLeaderBoard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxGdWxsTGVhZGVyQm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/deepbh/Documents/Github/ghcpac/LeaderboardApp/LeaderboardApp/Views/Home/Index.cshtml]
+[C:/Users/deepbh/Documents/Github/LeaderboardApp/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/deepbh/Documents/Github/ghcpac/LeaderboardApp/LeaderboardApp/Views/Home/Terms.cshtml]
+[C:/Users/deepbh/Documents/Github/LeaderboardApp/Views/Home/Terms.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUZXJtcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/deepbh/Documents/Github/ghcpac/LeaderboardApp/LeaderboardApp/Views/Learn/Certification.cshtml]
+[C:/Users/deepbh/Documents/Github/LeaderboardApp/Views/Learn/Certification.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVhcm5cQ2VydGlmaWNhdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/deepbh/Documents/Github/ghcpac/LeaderboardApp/LeaderboardApp/Views/Learn/Module.cshtml]
+[C:/Users/deepbh/Documents/Github/LeaderboardApp/Views/Learn/Module.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVhcm5cTW9kdWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/deepbh/Documents/Github/ghcpac/LeaderboardApp/LeaderboardApp/Views/Shared/_Layout.cshtml]
+[C:/Users/deepbh/Documents/Github/LeaderboardApp/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/deepbh/Documents/Github/ghcpac/LeaderboardApp/LeaderboardApp/Views/Team/AddTeam.cshtml]
+[C:/Users/deepbh/Documents/Github/LeaderboardApp/Views/Team/AddTeam.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhbVxBZGRUZWFtLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/deepbh/Documents/Github/ghcpac/LeaderboardApp/LeaderboardApp/Views/Team/EditTeam.cshtml]
+[C:/Users/deepbh/Documents/Github/LeaderboardApp/Views/Team/EditTeam.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhbVxFZGl0VGVhbS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/deepbh/Documents/Github/ghcpac/LeaderboardApp/LeaderboardApp/Views/Team/Score.cshtml]
+[C:/Users/deepbh/Documents/Github/LeaderboardApp/Views/Team/Score.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhbVxTY29yZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/deepbh/Documents/Github/ghcpac/LeaderboardApp/LeaderboardApp/Views/User/AddScore.cshtml]
+[C:/Users/deepbh/Documents/Github/LeaderboardApp/Views/User/AddScore.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxBZGRTY29yZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/deepbh/Documents/Github/ghcpac/LeaderboardApp/LeaderboardApp/Views/User/Profile.cshtml]
+[C:/Users/deepbh/Documents/Github/LeaderboardApp/Views/User/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

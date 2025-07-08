@@ -18,8 +18,6 @@ RUN apt-get update && apt-get install -y net-tools
 # Install Azure CLI
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
-RUN az login --use-device-code
-
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
@@ -34,9 +32,14 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./LeaderboardApp.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
+
 WORKDIR /app
 COPY --from=publish /app/publish .
 # Copy certificate file into the image
 
-USER app
-ENTRYPOINT ["dotnet", "LeaderboardApp.dll"]
+USER root
+RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
+
+COPY --chmod=755 setup_db.sh /scripts/setup_db.sh
+
+ENTRYPOINT ["/bin/bash", "-c", "/scripts/setup_db.sh && exec dotnet /app/LeaderboardApp.dll"]

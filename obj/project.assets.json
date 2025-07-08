@@ -5835,11 +5835,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\deepbh\\Documents\\Github\\ghcpac\\LeaderboardApp\\LeaderboardApp\\LeaderboardApp.csproj",
+      "projectUniqueName": "C:\\Users\\deepbh\\Documents\\Github\\LeaderboardApp\\LeaderboardApp.csproj",
       "projectName": "LeaderboardApp",
-      "projectPath": "C:\\Users\\deepbh\\Documents\\Github\\ghcpac\\LeaderboardApp\\LeaderboardApp\\LeaderboardApp.csproj",
+      "projectPath": "C:\\Users\\deepbh\\Documents\\Github\\LeaderboardApp\\LeaderboardApp.csproj",
       "packagesPath": "C:\\Users\\deepbh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\deepbh\\Documents\\Github\\ghcpac\\LeaderboardApp\\LeaderboardApp\\obj\\",
+      "outputPath": "C:\\Users\\deepbh\\Documents\\Github\\LeaderboardApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

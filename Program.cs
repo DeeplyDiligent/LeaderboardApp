@@ -33,14 +33,14 @@ namespace LeaderboardApp
                         try
                         {
                             Console.WriteLine("Attempting to load certificate");
-                            var certPath = Environment.GetEnvironmentVariable("CertPath");
-                            var certPassword = Environment.GetEnvironmentVariable("CertPassword");
-                            var cert = new X509Certificate2(certPath, certPassword);
+                            // Retrieve PORT environment variable; default to 80 if not set or invalid
+                            var portString = Environment.GetEnvironmentVariable("PORT");
+                            var port = int.TryParse(portString, out var parsedPort) ? parsedPort : 80;
+                            // var certPath = Environment.GetEnvironmentVariable("CertPath");
+                            // var certPassword = Environment.GetEnvironmentVariable("CertPassword");
+                            // var cert = new X509Certificate2(certPath, certPassword);
 
-                            serverOptions.ListenAnyIP(8081, listenOptions =>
-                            {
-                                listenOptions.UseHttps(cert);
-                            });
+                            serverOptions.ListenAnyIP(port);
                         }
                         catch (Exception ex)
                         {
