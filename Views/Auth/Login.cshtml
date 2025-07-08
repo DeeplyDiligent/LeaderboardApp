@@ -1,0 +1,98 @@
+﻿@model LeaderboardApp.ViewModels.LoginViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Login";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Login</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <div class="input-group">
+                        <input type="email" asp-for="Email" class="form-control" id="email" placeholder="Enter your email" required />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary" id="sendPasscodeBtn">Send Passcode</button>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="passcode">Passcode</label>
+                    <input type="text" asp-for="Passcode" class="form-control" id="passcode" placeholder="Enter your passcode" required disabled />
+                </div>
+
+                <div class="form-group text-center">
+                    <button type="button" class="btn btn-success" id="loginBtn" disabled>Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Handle SendPasscode button click
+            $('#sendPasscodeBtn').click(function () {
+                var email = $('#email').val();
+                if (email) {
+                    $.ajax({
+                        url: '@Url.Action("SendPasscode", "Auth")',
+                        type: 'POST',
+                        data: { Email: email },
+                        success: function (data) {
+                            if (data.success) {
+                                alert(data.message);
+                                if (data.passcode) {
+                                    alert("Passcode: " + data.passcode);  // Show passcode in debug mode
+                                }
+                                // Disable Send Passcode button, enable passcode and login button
+                                $('#sendPasscodeBtn').prop('disabled', true);
+                                $('#passcode').prop('disabled', false);
+                                $('#loginBtn').prop('disabled', false);
+                            } else {
+                                alert(data.message);
+                            }
+                        },
+                        error: function (error) {
+                            alert("Error sending passcode.");
+                        }
+                    });
+                } else {
+                    alert("Please enter a valid email.");
+                }
+            });
+
+            // Handle Login button click
+            $('#loginBtn').click(function () {
+                var email = $('#email').val();
+                var passcode = $('#passcode').val();
+                if (email && passcode) {
+                    $.ajax({
+                        url: '@Url.Action("Login", "Auth")',
+                        type: 'POST',
+                        data: { Email: email, Passcode: passcode },
+                        success: function (data) {
+                            alert("Login successful!");
+                            // You can redirect to the homepage or another page here
+                            window.location.href = '@Url.Action("Index", "Home")';
+                            // Assume you get the token expiration time from the server as part of the response
+                            const tokenExpiration = Math.floor(Date.now() / 1000) + 86400; // Expire in 1 day
+                            localStorage.setItem("tokenExpiration", tokenExpiration);
+                        },
+                        error: function (error) {
+                            alert("Error validating email/passcode.");
+                        }
+                    });
+                } else {
+                    alert("Please enter both email and passcode.");
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,67 @@
+﻿@model List<LeaderboardApp.DTOs.LeaderboardEntryDto>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Leaderboard";
+}
+
+<div class="row">
+    <div class="col-md-12 col-centered">
+        <h2 class="mb-0">Team Rankings</h2>
+
+        <!--Display last updated time -->
+        <p class="text-muted">
+            @if (Model != null && Model.Count > 0)
+            {
+                <span>Last update: @Model[0].LastUpdated.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")</span>
+            }
+            else
+            {
+                <span>No leaderboard data available.</span>
+            }
+        </p>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">Rank</th>
+                    <th scope="col">Team</th>
+                    <th scope="col">Tagline</th>
+                    <th scope="col" class="text-right">Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int rank = 1;
+                }
+                @foreach (var team in Model)
+                {
+                    <tr>
+                        <td width="50px" class="text-center">@rank</td>
+                        <td>
+                            <img src="@team.TeamIcon" alt="@team.TeamName icon" class="rounded-circle mr-3" style="width: 40px; height: 40px; float: left; margin-right: 10px;" />
+
+                            <div style="display: inline-block;">
+                                <div><strong>
+                                        <a href="@Url.Action("Score", "Team", new { teamId = team.TeamId })" style="font-size: 1.25rem; text-decoration: underline; color: black;">
+                                            @team.TeamName
+                                        </a>
+                                </strong></div>
+                                <div><small class="text-muted">@string.Join(", ", team.ParticipantNames)</small></div>
+                            </div>
+                        </td>
+                        <td>@team.TeamTagline</td>
+                        <td class="text-right">@team.Score</td>
+                    </tr>
+                    ++rank;
+                }
+            </tbody>
+        </table>
+
+        <div class="mt-4">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>

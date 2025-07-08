@@ -1,0 +1,145 @@
+﻿@model List<LeaderboardApp.DTOs.ChallengeDto>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Leaderboard";
+}
+
+<style>
+    .challenge-content-truncate {
+        max-height: 180px;
+        overflow: hidden;
+        position: relative;
+    }
+
+        .challenge-content-truncate::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2.5em;
+            background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, #fff 100%);
+            pointer-events: none;
+        }
+
+        .challenge-content-truncate p {
+            margin-bottom: 0;
+        }
+</style>
+
+<!-- Announcements/News Section -->
+<div class="row mt-5">
+    <div class="col-md-12">
+
+        <!-- Announcements Section -->
+        @foreach (var challenge in Model)
+        {
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="card" style="border: 1px solid #e1e4e8; border-radius: 6px; margin-bottom: 20px;">
+                        <!-- Title with grey background -->
+                        <div class="card-header" style="padding: 2px; border-bottom: 2px solid #e1e4e8; border-top-left-radius:6px; border-top-right-radius:6px;">
+                            <h4 style="margin: 0; font-size: 1.5rem; display: flex; align-items: center;">
+                                @if (challenge.ActivityId == 10)
+                                {
+                                    <img src="~/images/learnicon.svg" alt="Learn" style="width: 24px; height: 24px; margin-right: 10px;" />
+                                }
+                                @if (challenge.ActivityId == 11)
+                                {
+                                    <img src="~/images/copilotcerticon.jpg" alt="Learn" style="width: 24px; height: 24px; margin-right: 10px;" />
+                                }
+                                @if (challenge.ActivityId == 12)
+                                {
+                                    <img src="~/images/challengeicon.png" alt="Learn" style="width: 24px; height: 24px; margin-right: 10px;" />
+                                }
+                                else if (challenge.ActivityId == 13)
+                                {
+                                    <img src="~/images/linkicon.png" alt="Link" style="width: 24px; height: 24px; margin-right: 10px;" />
+                                }
+
+                                @* Link title based on ActivityId *@
+                                @{
+                                    string controller = "";
+                                    string action = "";
+
+                                    switch (challenge.ActivityId)
+                                    {
+                                        case 10:
+                                            controller = "Learn";
+                                            action = "Module";
+                                            break;
+                                        case 11:
+                                            controller = "Learn";
+                                            action = "Certification";
+                                            break;
+                                        case 12:
+                                            controller = "Challenge";
+                                            action = "Details";
+                                            break;
+                                        case 13:
+                                            controller = "Challenge";
+                                            action = "ExternalLink";
+                                            break;
+                                    }
+
+                                    var url = Url.Action(action, controller, new { challengeId = challenge.ChallengeId });
+                                }
+
+                                <a href="@url">
+                                    @Html.Raw(challenge.Title)
+                                </a>
+
+                                @if (challenge.IsCompleted)
+                                {
+                                    <img src="~/images/tickmarkicon.png" alt="Completed" style="width: 20px; height: 20px; margin-left: auto;" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/pendingicon.png" alt="Completed" style="width: 20px; height: 20px; margin-left: auto;" />
+                                }
+                            </h4>
+                        </div>
+                        <div class="card-body challenge-content-truncate" style="padding: 15px;">
+                            <p>@Html.Raw(challenge.Content)</p>
+                        </div>
+                        <div class="card-footer text-muted" style="background-color: #f6f8fa; border-top: 1px solid #e1e4e8; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; padding-left: 15px;">
+                            <small>Posted on @challenge.PostedDate.ToString("MMMM dd, yyyy")</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="@Url.Action("Index", "Home")" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+    <a id="scrollTopBtn" href="#" class="btn btn-outline-primary"
+       style="position: fixed; bottom: 40px; right: 30px; display: none; z-index: 1000;">
+        Scroll to Top
+    </a>
+</div>
+
+
+@section Scripts {
+    <script>
+        // Show/hide the button when scrolling
+        window.onscroll = function () {
+            var scrollTopBtn = document.getElementById("scrollTopBtn");
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                scrollTopBtn.style.display = "block";
+            } else {
+                scrollTopBtn.style.display = "none";
+            }
+        };
+
+        // Scroll to top on click
+        document.getElementById("scrollTopBtn").addEventListener("click", function (e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+}

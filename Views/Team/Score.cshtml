@@ -1,0 +1,96 @@
+﻿@model List<LeaderboardApp.Models.TeamScoreEntryViewModel>
+
+@{
+    ViewData["Title"] = "Team Score Summary";
+    var teamName = ViewBag.TeamName as string;
+    var teamTagline = ViewBag.TeamTagline as string;
+    var teamIcon = ViewBag.TeamIcon as string;
+    var teamId = ViewBag.TeamId;
+    var groupedScores = Model
+        .OrderByDescending(s => s.Timestamp)
+        .GroupBy(s => s.Timestamp?.ToLocalTime().Date)
+        .ToList();
+
+    // Sentence templates for team and individual activities
+    var teamActivityTemplates = new[]
+    {
+        $"🎊 <strong>Team {teamName}</strong> scored <strong>{{0}}</strong> points by completing the <em>{{1}}</em> activity together!",
+        $"🎊 <strong>Team {teamName}</strong> earned <strong>{{0}}</strong> points as a group for finishing <em>{{1}}</em>!",
+        $"🎊 <strong>Team {teamName}</strong> worked together and gained <strong>{{0}}</strong> points for <em>{{1}}</em>!",
+        $"🎊 <strong>Team {teamName}</strong> collaborated and achieved <strong>{{0}}</strong> points by doing <em>{{1}}</em>!",
+        $"🎊 <strong>Team {teamName}</strong> completed <em>{{1}}</em> as a team and got <strong>{{0}}</strong> points!"
+    };
+
+    var individualActivityTemplates = new[]
+    {
+        $"🎉 <strong>{{0}}</strong> scored <strong>{{1}}</strong> points for the team by rocking the <em>{{2}}</em> activity!",
+        $"🎉 <strong>{{0}}</strong> contributed <strong>{{1}}</strong> points to the team for <em>{{2}}</em>!",
+        $"🎉 <strong>{{0}}</strong> helped the team with <strong>{{1}}</strong> points by completing <em>{{2}}</em>!",
+        $"🎉 <strong>{{0}}</strong> boosted the team score by <strong>{{1}}</strong> points in <em>{{2}}</em>!",
+        $"🎉 <strong>{{0}}</strong> earned <strong>{{1}}</strong> points for the team by finishing <em>{{2}}</em>!"
+    };
+
+    var rand = new Random();
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Home";
+}
+
+<div class="container mt-4">
+    <!-- Team Header -->
+    <div class="text-center mb-4">
+        <img src="@teamIcon" alt="@teamName icon" style="width: 80px; height: 80px; border-radius: 50%;" />
+        <h1 style="font-size: 2.5rem; margin-top: 10px;">@teamName</h1>
+        <p class="lead" style="color: #666;">@teamTagline</p>
+        <h3 class="text-success" style="margin-top: 10px;">Score: <strong>@ViewBag.TotalScore.ToString("F0")</strong></h3>
+        <div class="d-flex flex-wrap mt-2">
+            @foreach (var nick in (List<string>)ViewBag.ParticipantNicknames)
+            {
+                <span class="badge bg-dark text-white m-1 p-2" style="font-size: 1rem;">@nick</span>
+            }
+        </div>
+    </div>
+
+    <!-- Score Log -->
+    <div class="card shadow-sm p-4">
+        <h2 class="mb-3" style="font-size: 1.75rem;"> Team Activity</h2>
+        <a href="@Url.Action("Score", "Team", new { teamId = ViewBag.TeamId, refresh = true })" class="btn btn-sm btn-outline-secondary" title="Refresh scores">
+            Refresh Scores
+        </a>
+
+        @if (Model.Any())
+        {
+            foreach (var group in groupedScores)
+            {
+                <h4 class="mt-4 text-muted">@group.Key?.ToString("dddd, dd MMM yyyy")</h4>
+                <ul class="list-group mb-3">
+                    @foreach (var score in group)
+                    {
+                        if (score.IsTeamActivity)
+                        {
+                            var template = teamActivityTemplates[rand.Next(teamActivityTemplates.Length)];
+                            <li class="list-group-item" style="font-size: 1.2rem;">
+                                @Html.Raw(string.Format(template, score.Score.ToString("F0"), score.ActivityName))
+                                <span class="text-muted float-end">@score.Timestamp?.ToLocalTime().ToString("t")</span>
+                            </li>
+                        }
+                        else
+                        {
+                            var template = individualActivityTemplates[rand.Next(individualActivityTemplates.Length)];
+                            <li class="list-group-item" style="font-size: 1.2rem;">
+                                @Html.Raw(string.Format(template, score.Nickname, score.Score.ToString("F0"), score.ActivityName))
+                                <span class="text-muted float-end">@score.Timestamp?.ToLocalTime().ToString("t")</span>
+                            </li>
+                        }
+                    }
+                </ul>
+            }
+        }
+        else
+        {
+            <p class="text-muted">No scores yet for this team. Time to get started! 💪</p>
+        }
+    </div>
+</div>

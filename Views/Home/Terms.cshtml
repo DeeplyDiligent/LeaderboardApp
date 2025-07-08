@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Terms of Use";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5 mb-5">
+    <h2 class="mb-4">Terms of Use</h2>
+
+    <p>
+        Welcome to the GitHub Copilot Challenge App (the “App”), developed by Microsoft Corporation (“Microsoft”) to support customer engagement, learning, and adoption of GitHub Copilot.
+        By accessing or using the App, you agree to the following terms and conditions. If you do not agree with any of these terms, please do not use the App.
+    </p>
+
+    <h4 class="mt-4">1. Use of the App</h4>
+    <p>
+        The App is provided for educational and enablement purposes. Participants may use the App to complete challenges, track team progress, and submit feedback.
+        You must not misuse the App or interfere with its normal operation.
+    </p>
+
+    <h4 class="mt-4">2. Data & Privacy</h4>
+    <p>
+        Microsoft does not collect any data or telemetry from this App. The App is deployed and run entirely within the customer's environment.
+        However, customers may choose to share usage or feedback data with Microsoft at their own discretion.
+        For any customer-supplied data that may be shared, Microsoft’s handling of such data is governed by the
+        <a href="https://privacy.microsoft.com" target="_blank">Microsoft Privacy Statement</a>.
+    </p>
+
+    <h4 class="mt-4">3. Intellectual Property</h4>
+    <p>
+        All content, trademarks, and intellectual property within the App remain the property of Microsoft or their respective owners.
+        You may not copy, modify, or distribute content from the App without prior written permission.
+    </p>
+
+    <h4 class="mt-4">4. Feedback</h4>
+    <p>
+        Any feedback or suggestions you provide through the App may be used by Microsoft to improve its products and services.
+        You grant Microsoft a royalty-free, perpetual license to use such feedback.
+    </p>
+
+    <h4 class="mt-4">5. Limitation of Liability</h4>
+    <p>
+        This App is provided “as-is” without warranty of any kind. Microsoft shall not be liable for any direct, indirect, or incidental damages arising from your use of the App.
+    </p>
+
+    <h4 class="mt-4">6. Changes to Terms</h4>
+    <p>
+        Microsoft reserves the right to update these Terms of Use at any time. Continued use of the App after changes indicates your acceptance of the revised terms.
+    </p>
+
+    <h4 class="mt-4">7. Contact</h4>
+    <p>
+        For any questions or concerns about the App or these Terms, please contact:
+        <strong>@(ViewData["SupportEmail"] ?? "[Insert internal support email]")</strong>
+    </p>
+
+    <p class="mt-5 text-muted">
+        Last updated: 05/05/2025
+    </p>
+</div>

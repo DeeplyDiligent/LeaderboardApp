@@ -1,0 +1,205 @@
+﻿@using LeaderboardApp.Services
+@model LeaderboardApp.ViewModels.HomeViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Home";
+}
+
+<!-- Main Heading with GitHub Copilot Icon -->
+<div class="row">
+    <div class="col-md-12 col-centered">
+        <h1 class="text-left" style="font-size: 2.5rem; font-weight: 500;">
+            <img src="~/images/github-copilot-challenge.jpg" alt="GitHub Copilot Challenge" style="width: 75px; height: 50px; border-radius: 8%; margin-right: 10px;" />
+            GitHub Copilot Challenge
+        </h1>
+    </div>
+</div>
+
+<!-- Leaderboard Table -->
+<div class="row" style="margin-bottom: 20px;border: 1px solid #e1e4e8; padding-top:10px; border-radius:5px;">
+    <div class="col-md-12 col-centered">
+        <div style="width:100%;">
+            <div class="text-left" style="font-size: 1.75rem; color: #333;">Team Standings</div>
+            <div class="mb-0 text-right" style="font-size: 1rem;">
+                @if (Model != null && Model.Leaderboard.Count > 0)
+                {
+                    <span>Last update: @Model.Leaderboard[0].LastUpdated.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")</span>
+                }
+                else
+                {
+                    <span>No leaderboard data available.</span>
+                }
+            </div>
+        </div>
+
+        <table class="table" style="background-color: #fff; border: 1px solid #e1e4e8; border-radius: 5px;">
+            <thead>
+                <tr style="background-color: #f6f8fa; color: #24292f;">
+                    <th scope="col" class="text-center">Rank</th>
+                    <th scope="col">Team</th>
+                    <th scope="col">Tagline</th>
+                    <th scope="col" class="text-right">Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int rank = 1;
+                }
+                @foreach (var team in Model.Leaderboard.Take(3))
+                {
+                    <tr>
+                        <td width="50px" class="text-center" style="font-size: 1.25rem;">@rank</td>
+                        <td style="display: flex; align-items: center;">
+                            <img src="@team.TeamIcon" alt="@team.TeamName icon" class="rounded-circle mr-3" style="width: 25px; height: 25px; margin-right: 15px;" />
+                            <a href="@Url.Action("Score", "Team", new { teamId = team.TeamId })" style="font-size: 1.25rem; text-decoration: none; color: black;">
+                                @team.TeamName
+                            </a>
+                        </td>
+                        <td style="font-size: 1.25rem;">@team.TeamTagline</td>
+                        <td class="text-right" style="font-size: 1.25rem;">@team.Score</td>
+                    </tr>
+                    ++rank;
+                }
+            </tbody>
+        </table>
+
+        <div class="text-right mt-4">
+            <a href="@Url.Action("FullLeaderboard", "Home")" class="btn btn-link" style="font-size: 1.2rem; color: #0366d6;">See the Full Leaderboard</a>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Challenges Section -->
+<div class="row mt-5" style="margin-bottom: 20px;border: 1px solid #e1e4e8; border-radius:5px;">
+    <div class="col-md-12">
+        <h3 class="mb-0" style="font-size: 1.75rem; color: #333;">My Next Challenges</h3>
+        @if (Model.Challenges != null && Model.Challenges.Any())
+        {
+            <div class="row">
+                @foreach (var challenge in Model.Challenges.Take(3))
+                {
+                    <div class="col-md-4 announcement-card">
+                        <div class="card" style="border: 1px solid #e1e4e8; border-radius: 5px; margin-bottom: 20px;">
+                            <!-- Title with grey background, consistent with the full announcements page -->
+                            <div class="card-header" style="background-color: #f6f8fa; color: black; border-top-left-radius:5px; border-top-right-radius:5px; padding:10px;">
+                                <h4 style="margin: 0; font-size: 1.5rem; display: flex; align-items: center;">
+                                    @if (challenge.ActivityId == 10)
+                                    {
+                                        <img src="~/images/learnicon.svg" alt="Learn" style="width: 24px; height: 24px; margin-right: 10px;" />
+                                    }
+                                    @if (challenge.ActivityId == 11)
+                                    {
+                                        <img src="~/images/certificateicon.svg" alt="Learn" style="width: 24px; height: 24px; margin-right: 10px;" />
+                                    }
+                                    @if (challenge.ActivityId == 12)
+                                    {
+                                        <img src="~/images/challengeicon.png" alt="Learn" style="width: 24px; height: 24px; margin-right: 10px;" />
+                                    }
+                                    else if (challenge.ActivityId == 13)
+                                    {
+                                        <img src="~/images/linkicon.png" alt="Link" style="width: 24px; height: 24px; margin-right: 10px;" />
+                                    }
+
+                                    @* Link title based on ActivityId *@
+                                    @{
+                                        string controller = "";
+                                        string action = "";
+
+                                        switch (challenge.ActivityId)
+                                        {
+                                            case 10:
+                                                controller = "Learn";
+                                                action = "Module";
+                                                break;
+                                            case 11:
+                                                controller = "Learn";
+                                                action = "Certification";
+                                                break;
+                                            case 12:
+                                                controller = "Challenge";
+                                                action = "Details";
+                                                break;
+                                            case 13:
+                                                controller = "Challenge";
+                                                action = "ExternalLink";
+                                                break;
+                                        }
+
+                                        var url = Url.Action(action, controller, new { challengeId = challenge.ChallengeId });
+                                    }
+
+                                    <a href="@url" style="text-decoration: none; color: inherit;">
+                                        @challenge.Title
+                                    </a>
+
+                                </h4>
+                            </div>
+                            <div class="card-body challenge-content-truncate" style="padding: 15px;">
+                                <p class="truncate-text" style="font-size: 1.25rem;">@challenge.Content.RemoveHtmlTags()</p>
+                            </div>
+                            <div class="card-footer text-muted" style="background-color: #f6f8fa; border-top: 1px solid #e1e4e8; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; padding-left: 15px;">
+                                <small>Posted on @challenge.PostedDate.ToString("MMMM dd, yyyy")</small>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center" style="font-size: 1.25rem; color: #333;">No challenges available.</div>
+        }
+    </div>
+    <div class="text-right mt-4">
+        <a href="@Url.Action("AllChallenges", "Home")" class="btn btn-link" style="font-size: 1.2rem; color: #0366d6;">See All Challenges</a>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .challenge-content-truncate {
+            max-height: 100px;
+            overflow: hidden;
+            position: relative;
+        }
+
+            .challenge-content-truncate::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 2.5em;
+                background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, #fff 100%);
+                pointer-events: none;
+            }
+
+            .challenge-content-truncate p {
+                margin-bottom: 0;
+            }
+
+        .truncate-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .announcement-card .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            /* Remove fixed height and overflow here to avoid conflict */
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+
+    </script>
+}

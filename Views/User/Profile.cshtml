@@ -1,0 +1,177 @@
+﻿@model LeaderboardApp.Models.Participant
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "User Profile";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Edit Profile</h2>
+
+    <!-- Display Last Activity -->
+    <div class="alert alert-info" role="alert">
+        <i>Last GitHub Activity: @ViewBag.LastActivity</i>
+    </div>
+
+    <form id="profileForm" class="form-horizontal">
+        <div class="form-group">
+            <label for="Firstname" class="control-label col-md-2">First Name</label>
+            <div class="col-md-10">
+                <input asp-for="Firstname" class="form-control" id="Firstname" value="@Model.Firstname" @(ViewBag.ChallengeStarted ? "disabled" : "") />
+                <span asp-validation-for="Firstname" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Lastname" class="control-label col-md-2">Last Name</label>
+            <div class="col-md-10">
+                <input asp-for="Lastname" class="form-control" id="Lastname" value="@Model.Lastname" @(ViewBag.ChallengeStarted ? "disabled" : "") />
+                <span asp-validation-for="Lastname" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Nickname" class="control-label col-md-2">Nickname</label>
+            <div class="col-md-10">
+                <input asp-for="Nickname" class="form-control" id="Nickname" value="@Model.Nickname" @(ViewBag.ChallengeStarted ? "disabled" : "") />
+                <span asp-validation-for="Nickname" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Githubhandle" class="control-label col-md-2">GitHub Handle</label>
+            <div class="col-md-10">
+                <input asp-for="Githubhandle" class="form-control" id="Githubhandle" value="@Model.Githubhandle" @(ViewBag.ChallengeStarted ? "disabled" : "") />
+                <span asp-validation-for="Githubhandle" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Mslearnhandle" class="control-label col-md-2">MS Learn Handle</label>
+            <div class="col-md-10">
+                <input asp-for="Mslearnhandle" class="form-control" id="Mslearnhandle" value="@Model.Mslearnhandle" @(ViewBag.ChallengeStarted ? "disabled" : "") />
+                <span asp-validation-for="Mslearnhandle" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Email" class="control-label col-md-2">Email</label>
+            <div class="col-md-10">
+                <input asp-for="Email" class="form-control" readonly id="Email" value="@Model.Email" />
+            </div>
+        </div>
+
+        <!-- Highlighted Dropdown for Team Selection -->
+        <div class="form-group" style="background-color: #f7f7f7; padding: 15px; border-radius: 5px; border: 1px solid #ccc;">
+            <label for="Teamid" class="control-label col-md-2" style="font-weight: bold; font-size: 1.2rem;">Join Team</label>
+            <div class="col-md-7">
+                <select asp-for="Teamid" class="form-control" id="Teamid" @(ViewBag.ChallengeStarted ? "disabled" : "")>
+                    <option value="">No team selected</option>
+                    @foreach (var team in ViewBag.Teams)
+                    {
+                        <option value="@team.Teamid"
+                        @(Model.Teamid == team.Teamid ? "selected" : "")
+                        @(ViewBag.FullTeamIds.Contains(team.Teamid) && Model.Teamid != team.Teamid ? "disabled style='color:gray;'" : "")>
+                            @team.Name (@team.Participants.Count participants)
+                        </option>
+                    }
+                </select>
+                <span asp-validation-for="Teamid" class="text-danger"></span>
+            </div>
+
+            <!-- "Edit Team" Button -->
+            <div class="col-md-1">
+                <a id="editTeamBtn" href="#" class="btn btn-success @(ViewBag.ChallengeStarted ? "disabled" : "")">Edit Team</a>
+            </div>
+
+
+            <!-- "Add Team" Button -->
+            <div class="col-md-1">
+                <a href="@Url.Action("AddTeam", "Team")" class="btn btn-success @(ViewBag.ChallengeStarted ? "disabled" : "")">Add Team</a>
+            </div>
+
+        </div>
+
+        <!-- Save Changes Button -->
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="button" id="saveProfileBtn" class="btn btn-primary" @(ViewBag.ChallengeStarted ? "disabled" : "")>Save Changes</button>
+            </div>
+        </div>
+    </form>
+
+    <div id="profileMessage" class="alert" style="display:none;"></div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // FIX: Convert Razor boolean to JavaScript boolean
+            var challengeStarted = @((bool)ViewBag.ChallengeStarted ? "true" : "false");
+
+            // Update the "Edit Team" button's href based on the selected team
+            $('#Teamid').change(function () {
+                const selectedTeamId = $(this).val();
+                const editTeamBtn = $('#editTeamBtn');
+
+                if (selectedTeamId) {
+                    editTeamBtn.attr('href', `@Url.Action("EditTeam", "Team")?teamId=${selectedTeamId}`);
+                    editTeamBtn.removeClass('disabled');
+                } else {
+                    editTeamBtn.attr('href', '#');
+                    editTeamBtn.addClass('disabled');
+                }
+            });
+
+            // Initialize the "Edit Team" button on page load
+            const initialTeamId = $('#Teamid').val();
+            if (initialTeamId) {
+                $('#editTeamBtn').attr('href', `@Url.Action("EditTeam", "Team")?teamId=${initialTeamId}`);
+            } else {
+                $('#editTeamBtn').attr('href', '#').addClass('disabled');
+            }
+
+            // Save Profile Button Click Handler
+            $('#saveProfileBtn').click(function () {
+                if (challengeStarted) {
+                    alert("The challenge has started. You cannot edit your profile.");
+                    return;
+                }
+
+                var formData = {
+                    Firstname: $('#Firstname').val(),
+                    Lastname: $('#Lastname').val(),
+                    Nickname: $('#Nickname').val(),
+                    Githubhandle: $('#Githubhandle').val(),
+                    Mslearnhandle: $('#Mslearnhandle').val(),
+                    Email: $('#Email').val(),
+                    Teamid: $('#Teamid').val()
+                };
+
+                if (!formData.Teamid) {
+                    $('#profileMessage')
+                        .removeClass('alert-success')
+                        .addClass('alert-danger')
+                        .text("Please select a team before saving your profile.")
+                        .show();
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("UpdateProfile", "User")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        $('#profileMessage').removeClass('alert-danger').addClass('alert-success').text(response.message).show();
+                    },
+                    error: function (xhr) {
+                        $('#profileMessage').removeClass('alert-success').addClass('alert-danger').text("Error saving profile.").show();
+                    }
+                });
+            });
+        });
+    </script>
+}
+

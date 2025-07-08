@@ -1,0 +1,8 @@
+﻿Login flow Testing Steps
+-----------
+Step1: curl -X POST "https://localhost:32823/api/Auth/SendEmailPasscode" -H "Content-Type: application/json" -d "{\"email\": \"suhasaraos@gmail.com\"}"
+Step2: Get the passcode from email or DB
+Step3: curl -X POST "https://localhost:32823/api/Auth/login" -H "accept: */*" -H "Content-Type: application/json" -d "{\"email\": \"suhasaraos@gmail.com\", \"passcode\": \"857257\"}"
+Step4: curl -X POST "https://localhost:32823/api/Auth/logout" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2YThjMWMzMi00ZjJiLTRmNWQtOTFiNy04MWFkN2U5YzJkNDUiLCJqdGkiOiI3NTE4N2VmNS02MjIyLTQ0Y2YtODM1Mi03NjdhNjRiMTQyYjQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiU3VoYXMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy9zcGl3LmV4cCI6MTcyMzUzMjAzNSwiaXNzIjoiR2hjYWNBcHAiLCJhdWQiOiJHaGNhY1BhcnRpY2lwYW50cyJ9.KVkhRPMur_Rl_piy6h5IvhoGxvGK6hm1lC2AgV82fUc" -H "Content-Type: application/json" -d "{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2YThjMWMzMi00ZjJiLTRmNWQtOTFiNy04MWFkN2U5YzJkNDUiLCJqdGkiOiI3NTE4N2VmNS02MjIyLTQ0Y2YtODM1Mi03NjdhNjRiMTQyYjQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiU3VoYXMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy9zcGl3LmV4cCI6MTcyMzUzMjAzNSwiaXNzIjoiR2hjYWNBcHAiLCJhdWQiOiJHaGNhY1BhcnRpY2lwYW50cyJ9.KVkhRPMur_Rl_piy6h5IvhoGxvGK6hm1lC2AgV82fUc\", \"refreshToken\":\"awPN4QTAkOlGzsxycIiCH7qDE6KD8GgHoruoKC/2eN8XXXnPVD/2YpyyUeoDruXcQc8Nhb4LA+nmMqeqjjm8hg==\"}"
+
+

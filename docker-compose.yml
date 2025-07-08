@@ -1,0 +1,18 @@
+﻿version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"  # Map the application port
+      - "443:8081"
+    environment:
+      - Database__Provider=postgresql
+      - ConnectionStrings__PostgreSQL=Host=fdjkjdslkfjiojfiwo.postgres.database.azure.com;Database=postgres;Username=pgadmin;Password=$$azureUser38032;SslMode=Require
+      - CertPath=/app/wwwroot/cert.pfx
+      - CertPassword=YourPasswordHere
+    volumes:
+      - ~/.azure:/root/.azure
+

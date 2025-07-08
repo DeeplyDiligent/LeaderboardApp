@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Leaderboard</title>
+    <link rel="icon" type="image/png" href="~/images/favicon.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional Bootstrap Theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Additional Styles -->
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <!-- Navbar with Login Button -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">
+                    <img src="~/images/favicon.png" alt="App Icon" style="height: 24px; width: 24px; margin-right: 8px; display: inline-block;" />
+                    GitHub Copilot Challenge
+                </a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li><a href="/User/Profile"><span class="glyphicon glyphicon-user"></span> Welcome, @User.Identity.Name</a></li>
+                        <li><a href="/AADAuth/Logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="/AADAuth/Login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        @RenderBody()
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-light py-3 mt-5" style="border-top: 1px solid #e1e4e8;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <ul class="list-inline">
+                        <li class="list-inline-item">
+                            <a href="#" class="text-muted">© 2025 Microsoft, Inc.</a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="home/terms" class="text-muted">Terms</a>
+                        </li>                       
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- Token Expiration Logic -->
+    <script>
+        function getTokenExpiration() {
+            // Retrieve token expiration from local storage or session storage
+            return localStorage.getItem("tokenExpiration");
+        }
+
+        function checkTokenExpiration() {
+            const tokenExpiration = getTokenExpiration();
+            const currentTime = Math.floor(Date.now() / 1000);
+
+            if (tokenExpiration && currentTime > tokenExpiration) {
+                // Token has expired, make a request to refresh the token
+                $.ajax({
+                    url: '/Auth/RefreshToken',
+                    type: 'POST',
+                    success: function (data) {
+                        // Handle successful token refresh
+                        console.log('Token refreshed successfully');
+                        localStorage.setItem("tokenExpiration", Math.floor(Date.now() / 1000) + 86400); // Expire in 1 day
+                    },
+                    error: function (error) {
+                        console.error('Failed to refresh token:', error);
+                        // Optionally redirect to the login page
+                        window.location.href = '/Auth/Login';
+                    }
+                });
+            }
+        }
+
+        // Call checkTokenExpiration periodically every 60 seconds
+        setInterval(checkTokenExpiration, 60000);
+    </script>
+
+    <!-- Page Specific Scripts -->
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

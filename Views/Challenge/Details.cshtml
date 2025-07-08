@@ -1,0 +1,145 @@
+﻿@model LeaderboardApp.DTOs.ChallengeDto
+
+@{
+    ViewData["Title"] = "Challenge Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm" style="border-radius: 8px;">
+        <div class="card-body">
+            <!-- Badge + Title -->
+            <div class="d-flex align-items-center mb-3">
+                <img src="~/images/challengeicon.png" alt="Challenge Icon" style="width: 60px; height: 60px; margin-right: 20px;" />
+                <div>
+                    <h2 style="margin: 0;">@Model.Title</h2>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; margin-bottom: 20px;">
+                @if (!string.IsNullOrEmpty(Model.Content))
+                {
+                    @Html.Raw(Model.Content)
+                }                        
+            </div>
+
+            <!-- Disclaimer Note -->
+            <div class="mt-5 p-3 bg-light rounded border" style="font-size: 0.95rem;">
+                <p class="mb-0 text-muted">
+                    ⚠️ Unless mentioned otherwise, complete all GitHub Copilot Chat challenges using ASK mode.
+                </p>                            
+                <p class="mb-0 text-muted">
+                    ⚠️ Certain aspects of the challenge might only function properly in certain editors like VS Code.
+                </p>
+                <p class="mb-0 text-muted">
+                    ⚠️ As these challenges are for learning purposes only, refrain from committing them to the main branch.
+                </p>
+                <p class="mb-0 text-muted">
+                    ⚠️ Shortcuts shown use default VS Code keys on Windows. They may differ on macOS, Linux, or custom setups. Suggestion colors match your editor’s theme.
+                </p>
+            </div>
+            <!-- Attestation Note -->
+            <div class="mt-5 p-3 bg-light rounded border" style="font-size: 0.95rem;">               
+                <p class="mb-0 text-muted">
+                    <strong>Note:</strong> By submitting this challenge, you're declaring on your honor (and in true spirit) that you've completed all the steps above. 
+                    Your submission adds points to your team and will be cross-checked against Copilot usage telemetry. 
+                    <br />
+                    <em>If there's a mismatch, your points including any team bonus might just vanish into the null void. Choose integrity. 😇</em>
+                </p>
+            </div>
+
+            <div id="submitSection" class="mt-4">
+                <input type="hidden" id="challengeId" value="@Model.ChallengeId" />
+                <button id="submitChallengeBtn" class="btn btn-success" @(Model.IsCompleted ? "disabled" : "")>
+                    @(Model.IsCompleted ? "Already Submitted" : "Submit Challenge")
+                </button>
+                <div id="submitMessage" class="mt-2"></div>
+            </div>
+
+            <div class="mt-4">
+                <a href="@Url.Action("AllChallenges", "Home")" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("submitChallengeBtn").addEventListener("click", async function () {
+            const challengeId = document.getElementById("challengeId").value;
+            const messageDiv = document.getElementById("submitMessage");
+
+            // Check if there are any radio buttons in the content
+            const allRadioButtons = document.querySelectorAll('input[type="radio"]');
+            const radioGroups = {};
+
+            // If there are radio buttons, group them by name
+            if (allRadioButtons.length > 0) {
+                allRadioButtons.forEach(radio => {
+                    if (!radioGroups[radio.name]) {
+                        radioGroups[radio.name] = false;
+                    }
+                    if (radio.checked) {
+                        radioGroups[radio.name] = true;
+                    }
+                });
+
+                // Validate that at least one radio button is selected in each group
+                const unselectedGroups = Object.entries(radioGroups)
+                    .filter(([name, isSelected]) => !isSelected)
+                    .map(([name]) => name);
+
+                if (unselectedGroups.length > 0) {
+                    messageDiv.innerHTML = "<span class='text-danger'>Please answer all questions before submitting.</span>";
+                    return;
+                }
+            }
+
+            // Collect all radio button responses
+            const surveyResponses = [];
+            const checkedRadios = document.querySelectorAll('input[type="radio"]:checked');
+
+            checkedRadios.forEach(radio => {
+                // Find the closest question text - look for a label with the same name or a heading
+                let radioGroup = radio.closest('fieldset') || radio.closest('div');
+                let questionElement = null;
+
+                // Try to find the question in various elements within the container
+                if (radioGroup) {
+                    questionElement = radioGroup.querySelector('legend') ||
+                                     radioGroup.querySelector('h3') ||
+                                     radioGroup.querySelector('h4') ||
+                                     radioGroup.querySelector('label') ||
+                                     radioGroup.querySelector('p.question') ||
+                                     radioGroup.querySelector('p');
+                }
+
+                let questionText = questionElement ? questionElement.textContent.trim() : "Question for " + radio.name;
+
+                surveyResponses.push({
+                    questionText: questionText,
+                    selectedOption: radio.value
+                });
+            });
+
+            const response = await fetch('@Url.Action("SubmitChallengeAjax", "Challenge")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    challengeId: parseInt(challengeId),
+                    surveyResponses: surveyResponses
+                })
+            });
+
+            if (response.ok) {
+                messageDiv.innerHTML = "<span class='text-success'>Challenge submitted successfully!</span>";
+                document.getElementById("submitChallengeBtn").disabled = true;
+            } else {
+                const errorText = await response.text();
+                messageDiv.innerHTML = "<span class='text-danger'>" + errorText + "</span>";
+            }
+        });
+    </script>
+}

@@ -1,0 +1,94 @@
+﻿@model LeaderboardApp.DTOs.ChallengeDto
+
+@{
+    ViewData["Title"] = "Challenge Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm" style="border-radius: 8px;">
+        <div class="card-body">
+            <!-- Title -->
+            <h2 class="mb-4">@Model.Title</h2>
+
+            <!-- Content -->
+            @if (!string.IsNullOrEmpty(Model.Content))
+            {
+                <div class="content-section">
+                    @Html.Raw(Model.Content)
+                </div>
+            }
+            <input type="hidden" id="challengeId" value="@Model.ChallengeId" />
+            <!-- Back Button -->
+            <div class="mt-4">
+                <a href="@Url.Action("AllChallenges", "Home")" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function showToast(message, isSuccess) {
+            // Remove any existing toasts
+            $(".custom-toast").remove();
+
+            // Create a Bootstrap 3.3.7 compatible toast
+            var toastHtml =
+                '<div class="custom-toast alert ' + (isSuccess ? 'alert-success' : 'alert-danger') + '" style="position: fixed; bottom: 20px; right: 20px; min-width: 300px; z-index: 9999;">' +
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                    '<strong>' + (isSuccess ? 'Success' : 'Error') + ':</strong> ' + message +
+                '</div>';
+
+            // Append the toast to body
+            $("body").append(toastHtml);
+
+            // Show the toast with animation
+            $(".custom-toast").hide().fadeIn(300);
+
+            // Auto-hide after 3 seconds
+            setTimeout(function() {
+                $(".custom-toast").fadeOut(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        }
+
+                function clickLink(url) {
+            var challengeId = document.getElementById("challengeId").value;
+            $.ajax({
+                type: "POST",
+                url: "/Challenge/LinkClicked",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    challengeId: challengeId
+                }),
+                success: function (response) {
+                    // Check if response is a string or an object
+                    if (typeof response === 'string') {
+                        showToast(response, true);
+                    } else if (response.value) {
+                        // Handle response from Ok("message")
+                        showToast(response.value, true);
+                    } else {
+                        // Fallback to original behavior
+                        showToast(response.message || "Challenge completed successfully", response.success || true);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    try {
+                        // Try to parse error response
+                        var errorResponse = JSON.parse(xhr.responseText);
+                        showToast(errorResponse.value || errorResponse.title || "An error occurred", false);
+                    } catch (e) {
+                        // If parsing fails, just show the raw text
+                        showToast("An error occurred: " + xhr.responseText, false);
+                    }
+                }
+            });
+
+            // Open the URL in a new tab regardless of the score being added
+            window.open(url, '_blank');
+        }
+    </script>
+}
